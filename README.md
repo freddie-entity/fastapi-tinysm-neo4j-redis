@@ -1,51 +1,55 @@
-# FastAPI + MongoDB
+# TinySM
 
-A simple starter for building RESTful APIs with FastAPI and MongoDB. 
+A simple implementation of FastAPI and following technologies below.
 
-## Features
+> This project is a backend part of the Tiny Social Media app (TinySM) for my school project.
+> The frontend part is in https://github.com/freddie-entity/vite-tinysm
 
-+ Python FastAPI backend.
-+ MongoDB database.
-+ Authentication
-+ Deployment
+## Consist of
 
-## How To Use
+- FastAPI .
+- Neo4j database.
+- OAuth2
+- Redis stream, pubsub, cache aside.
 
-Clone this repository and make a virtual environment in it. Install the modules listed in the `requirements.txt` file:
+## Start the project
 
-```console
-pip3 install -r requirements.txt
-```
-
-To run the starter:
-
-First, set your `PYTHONPATH`:
+- Download git repo:
 
 ```console
-export PYTHONPATH=$PWD
+git clone <thisisrepourl>
 ```
 
-Next:
+- Change working directory
+
+```console
+cd <folderyoujustcloned>
+```
+
+- Create new virtual environment to decouple packages from the original python
+
+```console
+python -m venv venv
+```
+
+- Activate the virtual environment just created.
+- Jump to working directory to app `cd app`then run
+
+```console
+pip install -r requirements.txt
+```
 
 ```console
 python main.py
 ```
 
-You also need to start your mongodb instance.
+You create brand-new free neo4j auradb or sandbox instance in their official website and replace the credential in setting files.
 
-The starter listens on port 8000 on address [0.0.0.0](0.0.0.0:8080). 
+The starter listens on http://localhost:8000
 
-![FastAPI-MongoDB starter](https://res.cloudinary.com/adeshina/image/upload/v1600180509/fopab9idhrjqeqds4izk.png)
+## FastAPI Docs
 
-## Deployment
+###### These are all of my api endpoints serving the frontend.
 
-[![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?repository=https://github.com/Youngestdev/fastapi-mongo)
-
-
-## Contributing ?
-
-Fork the repo, make changes and send a PR. We'll review it together!
-
-## License
-
-This project is licensed under the terms of MIT license.
+![](https://user-images.githubusercontent.com/74780149/142719071-1deb4ee8-004c-463d-914b-51f82edaf50d.PNG)
+![](https://user-images.githubusercontent.com/74780149/142719096-0ed75e82-7f48-46b1-9e3f-ef9dd47363d3.PNG)
