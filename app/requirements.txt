@@ -1,0 +1,14 @@
+fastapi
+neo4j
+pydantic[email]
+uvicorn
+
+passlib[bcrypt]
+python-multipart
+fastapi-mail
+pyjwt
+Pillow
+aiofiles
+aioredis
+celery
+flower
