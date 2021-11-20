@@ -72,9 +72,8 @@ async def proxy_stream(
         messages: List[Message]
         try:
             messages = await read_from_stream(redis, stream, to_read_id, past_ms, last_n)
-        except Exception as e:
-            logger.info(f"read timed out for stream {stream}, {e}")
-            return
+        except:
+            pass
 
         # If we have no new messages, note that read timed out and return
         # if len(messages) == 0:
@@ -95,17 +94,22 @@ async def proxy_stream(
         # Send messages to client, handling (ConnectionClosed, WebSocketDisconnect) in case client has disconnected
         try:
             await ws.send_json(prepared_messages)
+            gained = len(prepared_messages)
         except (WebSocketDisconnect):
             logger.info(f"{ws} disconnected from stream {stream}")
             return
         while True:
             data = await ws.receive_json()
             await redis.xadd(stream, data)
-            message = await read_from_stream(redis, stream, to_read_id, past_ms, 1)
+            stream_len = await redis.xlen(stream)
+            message = await read_from_stream(redis, stream, to_read_id, past_ms, stream_len-gained)
+            gained = stream_len
+            prepared_messages = []
             for msg in message:
                 latest_id = msg[1].decode("utf-8")
                 payload = {k.decode("utf-8"): v.decode("utf-8") for k, v in msg[2].items()}
-            await ws.send_json({"message_id": latest_id, "payload": payload})
+                prepared_messages.append({"message_id": latest_id, "payload": payload})
+            await ws.send_json(prepared_messages)
 
 
 html = """
