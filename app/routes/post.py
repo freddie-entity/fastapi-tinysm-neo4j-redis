@@ -20,7 +20,7 @@ async def get_post(id: Optional[str] = None, username: Optional[str] = None, tur
         result = session.run(GET_POST_BY_ID, {'id': id})
         data = [dict(i['n']) for i in result]     
         if data is not None:
-            return JSONResponse(content=data)
+            return JSONResponse(content=data[0])
         raise HTTPException(status_code=404, detail=f"Post {id} not found")
     elif username:
         result = session.run(GET_POST_BY_USERNAME, {'username': username, 'skip': skip, 'limit': limit})

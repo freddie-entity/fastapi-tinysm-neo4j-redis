@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from neo4j.work.simple import Session
 from starlette.responses import JSONResponse
 from cypher.comment import EDIT_COMMENT
-from cypher.post import EDIT_POST, GET_USERS_LIKED_POST, GET_USERS_LIKED_COMMENT
+from cypher.post import EDIT_POST, GET_USERS_LIKED_POST, GET_USERS_LIKED_COMMENT, GET_POST_BY_ID
 from cypher.user import FOLLOW_USER, LIKE_COMMENT, LIKE_POST, UNFOLLOW_USER, UNLIKE_COMMENT, UNLIKE_POST, GET_USER_FOLLOWER, GET_USER_FOLLOWING, EDIT_USER, JOIN_ROOM, LEAVE_ROOM
 from datetime import datetime
 from db.neo4j import get_db
@@ -41,8 +41,12 @@ async def like_post(session: Session = Depends(get_db), username: str = None, po
     print(users)
     session.run(EDIT_POST, {'post': dict({'like_count': len(users)}), 'id': post_id})
     
+    
     if data is not None:
-        return JSONResponse(content={'message': f'{username} liked post {post_id}!'})
+        result = session.run(GET_POST_BY_ID, {'id': post_id})
+        data = [dict(i['n']) for i in result]     
+        if data is not None:
+            return JSONResponse(content=data)
     raise HTTPException(status_code=404, detail=f"Error while liking")
 
 
